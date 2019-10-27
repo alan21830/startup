@@ -1,23 +1,24 @@
-    <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@page import ="java.sql.Timestamp"%>
+<%@page import="java.sql.Timestamp"%>
 <%@page import="java.util.*"%>
 <%@page import="model.Cliente"%>
 <%@page import="java.util.*"%>
 <%@page import="com.mysql.jdbc.jdbc2.optional.MysqlDataSource"%>
-
+<%@page import="java.sql.*"%>
 <%@page import="java.io.IOException"%>
 <%@page import=" java.sql.Connection"%>
 <%@page import="java.sql.Date"%>
 <%@page import="java.sql.Statement"%>
-
+<%@pageimport="java.net.HttpURLConnection"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Date" %>
-<%@page import="java.sql.SQLException" %>
+<%@page import="java.sql.Date"%>
+<%@page import="java.sql.SQLException"%>
 
 
 <!doctype html>
@@ -47,7 +48,7 @@ li {
 body {
 	background-size: cover;
 	background-image: url("comune.png");
-	background-color:white;
+	background-color: white;
 	background-repeat: no-repeat;
 }
 
@@ -82,239 +83,256 @@ body {
 	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 	crossorigin="anonymous"></script>
 
-<title>Hello, world!</title>
+<title>Hello!</title>
 </head>
+
 <body class="container-fluid" style="background-color: #fdf9f9;">
-<div class="jumbotron">
-	<h1>CSS Calendar</h1>
+	<div class="jumbotron">
+		<h1>CSS Calendar</h1>
 
 
 
 
-	<a class="linker"
-		href="
+		<a class="linker"
+			href="
 http://www.i-visionblog.com/2014/11/jquery-animated-number-counter-from-zero-to-value-jquery-animation.html"
-		target="_blank"></a>
-	<br />
-	
-	
-	<form method="get" action="Servlet">
-		<div class="cal">
-			<ul id="menu">
-				<li>
-				<div class="jumbotron">
-				
-					<p class="text-cal">Giorno</p> <select name="giorno"
-					onchange="call()">
-						<% for (int i=1 ; i < 32; i++) {
-    	 %>
-						<option value="<%=i%>" name="mese">
-							<%=i %>
-						</option>
-						<% } %>
-				</select>
-				</div>
-				</li>
-				<li><div class="jumbotron">
-				
-
-					<p class="text-cal">Mese</p> <select name="mese" onchange="call()">
-						<% for (int i=1; i < 13; i++) {
-    	 %>
-						<option value="<%=i%>">
-							<%=i %>
-						</option>
-						<% } %>
-				</select>
-				</div>
-				</li>
-				
-				<li>
-				<div class="jumbotron">
-				
-					<p class="text-cal">Anno</p> <select name="anno">
-						<%for (int i=2018;i<2030;i++){ %>
-
-						<option value="<%=i%>" name="anno">
-							<%=i %>
-						</option>
-
-						<%}%>
-
-				</select>
-				</div>
-				</li>
-
-				<li>
-				<div class="jumbotron">
-				
-					<p class="text-cal">Ora</p> <select name="ora">
-						<%for(int i=9;i<20;i++){ %>
-						<option value="<%=i%>" name="anno">
-							<%=i %>
-
-						</option>
-						<%} %>
-				</select>
-				</div>
-				</li>
-				<li>
-				<div class="jumbotron">
-					<p class="text-cal">Minuti</p> <select name="minuti">
-						<%for(int i=0;i<60;i+=15){ %>
-						<option value="<%=i %>">
-							<%=i %>
-						</option>
-						<%} %>
-				</select>
-				</div>
-				</li>
-			</ul>
-		</div>
-
-</div>
-
-<div class="jumbotron">
-
-		<div class="form-group">
-			<label for="exampleInputEmail1">Nome </label> <input type="text"
-				class="form-control is-invalid" id="exampleInputEmail1"
-				aria-describedby="emailHelp" placeholder="Enter nome" name="nome">
-			<small id="emailHelp" class="form-text text-muted"></small>
-		</div>
-</div>
-<div class="jumbotron">
-
-		<div class="form-group">
-			<label for="exampleInputEmail2">Cognome </label> <input type="text"
-				class="form-control is-invalid" id="exampleInputEmail2"
-				aria-describedby="emailHelp" placeholder="Enter cognome"
-				name="cognome">
-
-		</div>
-		</div>
-<div class="jumbotron">
-
-		<div class="form-group">
-			<label for="exampleInputEmail3">Telefono </label> <input type="text"
-				class="form-control" id="exampleInputEmail3"
-				aria-describedby="emailHelp" placeholder="Enter telefono"
-				name="telefono">
-
-		</div>
-
-</div>
-<div class="jumbotron">
-
-		<div class="form-group">
-			<label for="exampleInputPassword4">Indirizzo</label> <input
-				type="text" class="form-control is-invalid"
-				id="exampleInputPassword4" placeholder="indirizzo" name="indirizzo">
-		</div>
-
-
-
-		<button type="submit" class="btn btn-primary">Submit</button>
-	</form>
-</div>
-
-	<%
-ArrayList <Cliente> listaClienti= new ArrayList<Cliente>();
-
-
-Connection con=null;
-MysqlDataSource  d= new MysqlDataSource();
-d.setDatabaseName("dbordini");
-d.setPortNumber(3306);
-d.setServerName("127.0.0.1");
-d.setUser("root");
-try {
-	
-	con =d.getConnection();
-	Statement st= con.createStatement();
-	
-
-	/* Date d= new Date();
-	String oggi= d.getTime().toString(); */
-	
-String fet="SELECT * FROM dbordini.clienti";
-	
-	
-	ResultSet rs= st.executeQuery(fet);
-	
-
-	while(rs.next())
-		
-	{
-		
-		int id= rs.getInt("ID");
-		String nomen = rs.getString("nome");
-		String cognomen=rs.getString("cognome");
-		String indirizzon=rs.getString("indirizzo");
-		String telefonon=	rs.getString("telefono");
-		Timestamp ts= rs.getTimestamp("appuntamento");
-		 
-		
-		
+			target="_blank"></a> <br />
 
 		
-		System.out.println("\n"+nomen);
-		System.out.println("\n"+cognomen);
-		System.out.println("\n"+indirizzon);
-		System.out.println("\n"+telefonon);
+			<form method="get" action="Servlet">
+				<nav class="navbar navbar-inverse">
+					<div class="form-group">
+					<div class="cal">
+						<ul id="menu">
+							<li>
+								<p class="text-cal">Giorno</p> <select name="giorno"
+								onchange="call()">
+									<%
+										for (int i = 1; i < 32; i++) {
+									%>
+									<option value="<%=i%>" name="mese">
+										<%=i%>
+									</option>
+									<%
+										}
+									%>
+							</select>
+
+							</li>
+							<li>
+								<p class="text-cal">Mese</p> <select name="mese"
+								onchange="call()">
+									<%
+										for (int i = 1; i < 13; i++) {
+									%>
+									<option value="<%=i%>">
+										<%=i%>
+									</option>
+									<%
+										}
+									%>
+							</select>
+
+							</li>
+
+							<li>
+
+
+								<p class="text-cal">Anno</p> <select name="anno">
+									<%
+										for (int i = 2018; i < 2030; i++) {
+									%>
+
+									<option value="<%=i%>" name="anno">
+										<%=i%>
+									</option>
+
+									<%
+										}
+									%>
+
+							</select>
+
+							</li>
+
+							<li>
+
+								<p class="text-cal">Ora</p> <select name="ora">
+									<%
+										for (int i = 9; i < 20; i++) {
+									%>
+									<option value="<%=i%>" name="anno">
+										<%=i%>
+
+									</option>
+									<%
+										}
+									%>
+							</select>
+
+							</li>
+							<li>
+
+								<p class="text-cal">Minuti</p> <select name="minuti">
+									<%
+										for (int i = 0; i < 60; i += 15) {
+									%>
+									<option value="<%=i%>">
+										<%=i%>
+									</option>
+									<%
+										}
+									%>
+							</select>
+
+							</li>
+						</ul>
+					</div>
+					</div>
+				</nav>
 		
-		Cliente cl = new Cliente(id,nomen,cognomen,indirizzon,telefonon,ts);
+
+
+
+		<div class="jumbotron">
+
+			<div class="form-group">
+				<label for="exampleInputEmail1">Nome </label> <input type="text"
+					class="form-control is-invalid" id="exampleInputEmail1"
+					aria-describedby="emailHelp" placeholder="Enter nome" name="nome">
+				<small id="emailHelp" class="form-text text-muted"></small>
+			</div>
+
+
+
+			<div class="form-group">
+				<label for="exampleInputEmail2">Cognome </label> <input type="text"
+					class="form-control is-invalid" id="exampleInputEmail2"
+					aria-describedby="emailHelp" placeholder="Enter cognome"
+					name="cognome">
+
+			</div>
+
+
+
+			<div class="form-group">
+				<label for="exampleInputEmail3">Telefono </label> <input type="text"
+					class="form-control" id="exampleInputEmail3"
+					aria-describedby="emailHelp" placeholder="Enter telefono"
+					name="telefono">
+
+			</div>
+
+   
+			<div class="form-group">
+				<label for="exampleInputPassword4">Cod.Fiscale</label> <input
+					type="text" class="form-control is-invalid"
+					id="exampleInputPassword4" placeholder="indirizzo" name="indirizzo">
+			</div>
+			
+			<button type="submit" class="btn btn-primary">Submit</button>
+			
+			<%-- fine jumbotron --%>
+			</div>
+			</form>
 		
-		listaClienti.add(cl);
+
+		<%
+			ArrayList<Cliente> listaClienti = new ArrayList<Cliente>();
+			Class.forName("com.mysql.jdbc.Driver");
+			//Connection con=null;
+			//MysqlDataSource  d= new MysqlDataSource();
+			//d.setDatabaseName("dbordini");
+			//d.setPortNumber(3306);
+			//d.setServerName("127.0.0.1");
+			//d.setUser("root");
+			try {
+
+				Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/dbordini","root","root");
+				//con =d.getConnection();
+				Statement st = con.createStatement();
+
+				/* Date d= new Date();
+				String oggi= d.getTime().toString(); */
+
+				String fet = "SELECT * FROM dbordini.clienti;";
+
+				ResultSet rs = st.executeQuery(fet);
+
+				while (rs.next())
+
+				{
+
+					int id = rs.getInt("ID");
+					String nomen = rs.getString("nome");
+					String cognomen = rs.getString("cognome");
+					String indirizzon = rs.getString("indirizzo");
+					String telefonon = rs.getString("telefono");
+					Timestamp ts = rs.getTimestamp("appuntamento");
+
+					System.out.println("\n" + nomen);
+					System.out.println("\n" + cognomen);
+					System.out.println("\n" + indirizzon);
+					System.out.println("\n" + telefonon);
+
+					Cliente cl = new Cliente(id, nomen, cognomen, indirizzon, telefonon, ts);
+
+					listaClienti.add(cl);
+
+				}
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				%><h1 style ="color:red;">errore connessione db</h1>
+				<%
+			}
+		%>
+
+		<p class="text-justify">Tutti gli appuntamenti</p>
+
+
+		<table class="table">
+			<thead class="thead-dark">
+				<tr>
+
+					<th scope="col">NOME</th>
+					<th scope="col">COGNOME</th>
+					<th scope="col">TELEFONO</th>
+					<th scope="col">INDIRIZZO</th>
+					<th scope="col">APPUNTAMENTO</th>
+			</thead>
+
+			<tbody>
+				<%
+					for (Cliente cl : listaClienti) {
+				%>
+
+				<tr>
+					<td><%=cl.getNome()%></td>
+					<td><%=cl.getCognome()%></td>
+					<td><%=cl.getTelefono()%></td>
+					<td><%=cl.getIndirizzo()%></td>
+					<td><%=cl.getAppuntamento()%></td>
+				</tr>
+
+
+
+				<%
+					}
+				%>
+			</tbody>
+		</table>
+		<%
+		int j=0;
+		int k=0;
+		while(j>100)
+		{%>
+			 
+		     <p><%=j%></p>
+		  
+	   <%j++; Thread.sleep(500);} %>
 		
-		
-		
-	}
-	
-	
-} catch (SQLException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-}
-
-
-
-%>
-
-	<p class="text-justify">Tutti gli appuntamenti</p>
-
-
-	<table class="table">
-		<thead class="thead-dark">
-			<tr>
-
-				<th scope="col">NOME</th>
-				<th scope="col">COGNOME</th>
-				<th scope="col">TELEFONO</th>
-				<th scope="col">INDIRIZZO</th>
-				<th scope="col">APPUNTAMENTO</th>
-		</thead>
-
-		<tbody>
-			<% 
-
-    
-    for(Cliente cl : listaClienti)
-    { %>
-
-			<tr>
-				<td><%=cl.getNome() %></td>
-				<td><%=cl.getCognome() %></td>
-				<td><%=cl.getTelefono() %></td>
-				<td><%=cl.getIndirizzo() %></td>
-				<td><%=cl.getAppuntamento()%></td>
-			</tr>
-
-
-
-			<%}%>
-		</tbody>
-	</table>
 </body>
 
 </html>

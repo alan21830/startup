@@ -133,7 +133,9 @@ integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw
    </tbody>
    </table>
      
-<button class="btn btn-success"><a href="/webappdb/index.jsp">Add</a></button>
+<button class="btn btn-success"><a class="linker"
+			href="/index.jsp"
+			target="_blank"></a> <br /></button>
 	
 
  

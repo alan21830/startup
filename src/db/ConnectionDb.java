@@ -17,6 +17,7 @@ public class ConnectionDb {
 		d.setPortNumber(3306);
 		d.setServerName("127.0.0.1");
 		d.setUser("root");
+		d.setPassword("root");
 		try {
 			con =d.getConnection();
 			Statement st= con.createStatement();

@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -16,6 +17,8 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -41,7 +44,7 @@ import org.eclipse.persistence.oxm.MediaType;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-import com.sun.xml.xsom.impl.scd.Iterators.Map;
+
 
 import model.Cliente;
 
@@ -51,11 +54,7 @@ import model.Cliente;
 @WebServlet("/Servlet")
 public class Servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	
-	
- 
-    
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -67,18 +66,33 @@ public class Servlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    
+public static boolean verificaCf(String cf) {
+		
+		String reg="[a-zA-z]{6}\\d\\d[a-zA-Z]\\d\\d[a-zA-Z]\\d\\d\\d[a-zA-Z]";
+		Pattern p=   Pattern.compile(reg);
+		Matcher matcher =p.matcher(cf);
+		boolean ris=matcher.matches();
+		return ris;
+			
+	}
  	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
-	      
-		
-		
-		
-		
+		//
 		String nome =request.getParameter("nome");
 		String cognome =request.getParameter("cognome");
 		String telefono=request.getParameter("telefono");
 		String indirizzo=request.getParameter("indirizzo");
+		boolean cf=verificaCf(indirizzo);
+		
+		if(!cf)
+		{
+			
+			request.setAttribute("cf", cf);
+			RequestDispatcher rd=request.getRequestDispatcher("/index.jsp");
+			  rd.forward(request, response);
+		
+		}
+		else {
 		Timestamp appuntamento;
  
 		
@@ -104,36 +118,30 @@ public class Servlet extends HttpServlet {
  		
 		ArrayList <Cliente> listaClienti= new ArrayList<Cliente>();
 		
-		
-		Connection con=null;
-		MysqlDataSource  d= new MysqlDataSource();
-		d.setDatabaseName("dbordini");
-		d.setPortNumber(3306);
-		d.setServerName("127.0.0.1");
-		d.setUser("root");
-		try {
+		 try {
+			  Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e1) {
 			
-			con =d.getConnection();
+			e1.printStackTrace();
+		}
+         
+      
+	
+		
+//		Connection con=null;
+//		MysqlDataSource  d= new MysqlDataSource();
+//		d.setDatabaseName("dbordini");
+//		d.setPortNumber(3306);
+//		d.setServerName("127.0.0.1");
+//		d.setUser("root");
+//		d.setPassword("root");
+		try {
+			Connection con = DriverManager
+		             .getConnection("jdbc:mysql://localhost:3306/dbordini","root","root");
+			//con =d.getConnection();
 			Statement st= con.createStatement();
 			String qins="INSERT INTO `dbordini`.`clienti` (`NOME`, `COGNOME`, `TELEFONO`, `INDIRIZZO`, APPUNTAMENTO) VALUES ('"+nome+"', '"+cognome+"', '"+telefono+"','"+indirizzo+"','"+appuntamento+"')";
-	//	st.executeUpdate(qins);
-		
-		
-		
-
-Client client = ClientBuilder.newClient();
-String uri="http://localhost:8081/api";
-URL url = new URL("http://localhost:8081/api/getAllclienti");
-HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-conn.setRequestMethod("GET");
-conn.setRequestProperty("Accept", "application/json");
-BufferedReader br = new BufferedReader(new InputStreamReader(
-		(conn.getInputStream())));
-
-String output;
-while ((output = br.readLine()) != null) {
-	System.out.println(output);}
+		st.executeUpdate(qins);
   
 		ResultSet rs= st.executeQuery("Select * from clienti");
 			
@@ -180,7 +188,7 @@ rd.forward(request, response);
 		  }
 		}
 	
-	
+ 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
