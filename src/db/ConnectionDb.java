@@ -3,12 +3,13 @@ package db;
 import java.sql.*;
 import java.util.ArrayList;
 
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+ 
 
 import model.Cliente;
 
-public class ConnectionDb {
+public class ConnectionDb  {
 	
+/*
 	public void deleteUser(int id) throws SQLException {
 
 		Connection con=null;
@@ -34,7 +35,6 @@ public class ConnectionDb {
 	}
 
 	public ArrayList<Cliente> listAll(){
-
 
 		ArrayList<Cliente> lst= new ArrayList<Cliente>();
 		
@@ -73,4 +73,5 @@ public class ConnectionDb {
 		}
 		return lst;
 	}
+*/
 }

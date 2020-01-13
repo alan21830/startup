@@ -4,6 +4,7 @@
     
 <%@page import="java.util.*"%>
 <%@page import ="model.Cliente" %>
+<%@page import ="business.Services" %>
  
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -84,12 +85,10 @@ integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw
 	
     <title>Hello, world!</title>
   </head>
-  
-  
+
   <body>
-    
-    
-    
+
+
    <p class="text-justify">Tutti gli appuntamenti</p>
    
 
@@ -106,7 +105,7 @@ integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw
  		</thead>
     
    		<tbody>
-    <% List<Cliente> ls = (ArrayList<Cliente>)session.getAttribute("idsList");
+    <% List<Cliente> ls = (ArrayList<Cliente>) Services.getClienti();
 
     
     for(Cliente cl : ls)
@@ -132,10 +131,13 @@ integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw
     <%}%>
    </tbody>
    </table>
-     
-<button class="btn btn-success"><a class="linker"
-			href="/index.jsp"
-			target="_blank"></a> <br /></button>
+    <div class ="row">
+    <div class=col margin:auto>
+   <a href="/webappdb/index.jsp"  class="btn btn-primary" >  
+			Home</a>
+    
+ 			</div>
+			</div> 
 	
 
  

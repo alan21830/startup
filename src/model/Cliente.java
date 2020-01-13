@@ -4,24 +4,9 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
-
-@Entity
-@Table(name="Clienti")
 public class Cliente  implements Serializable{
 	
-	@Id
-	@Column(name="ID")
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	 
 	private int id;
 	public int getId() {
 		return id;
@@ -46,8 +31,7 @@ public class Cliente  implements Serializable{
 			
 		}
 
-		@Column(name="APPUNTAMENTO")
- 	    @Temporal(TemporalType.TIMESTAMP)
+	 
 		public Timestamp getAppuntamento() {
 			return appuntamento;
 		}
@@ -55,7 +39,7 @@ public class Cliente  implements Serializable{
 		public void setAppuntamento(Timestamp appuntamento) {
 			this.appuntamento = appuntamento;
 		}
-		@Column(name="NOME")
+	 
 		public String getNome() {
 			return nome;
 		}
@@ -63,7 +47,7 @@ public class Cliente  implements Serializable{
 		public void setNome(String nome) {
 			this.nome = nome;
 		}
-		@Column(name="COGNOME")
+		 
 		public String getCognome() {
 			return cognome;
 		}
@@ -71,7 +55,7 @@ public class Cliente  implements Serializable{
 		public void setCognome(String cognome) {
 			this.cognome = cognome;
 		}
-		@Column(name="INDIRIZZO")
+		 
 		public String getIndirizzo() {
 			return indirizzo;
 		}
@@ -79,7 +63,7 @@ public class Cliente  implements Serializable{
 		public void setIndirizzo(String indirizzo) {
 			this.indirizzo = indirizzo;
 		}
-		@Column(name="TELEFONO")
+	 
 		public String getTelefono() {
 			return telefono;
 		}

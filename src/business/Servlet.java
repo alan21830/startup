@@ -19,12 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnit;
+import javax.servlet.http.HttpSession;
+ 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,19 +28,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-
-import org.eclipse.persistence.jpa.jpql.parser.AbstractExpression;
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
-import org.eclipse.persistence.oxm.MediaType;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-
+ 
+ 
 
 import model.Cliente;
 
@@ -82,7 +67,7 @@ public static boolean verificaCf(String cf) {
 		String cognome =request.getParameter("cognome");
 		String telefono=request.getParameter("telefono");
 		String indirizzo=request.getParameter("indirizzo");
-		boolean cf=verificaCf(indirizzo);
+		boolean cf= true;//verificaCf(indirizzo);
 		
 		if(!cf)
 		{
@@ -194,8 +179,20 @@ rd.forward(request, response);
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		
+		if (username.equalsIgnoreCase("aaaa") && password.equalsIgnoreCase("bbb"))
+		{
+		RequestDispatcher rd= request.getRequestDispatcher("/index.jsp");
+		rd.forward(request, response);
+		}else {
+			HttpSession session= request.getSession();
+		session.setAttribute("message", "User inesistente");
+		RequestDispatcher rd= request.getRequestDispatcher("/login.jsp");
+rd.forward(request, response);
+		}
 	}
 
 }
